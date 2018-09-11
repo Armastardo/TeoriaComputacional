@@ -97,5 +97,3 @@ int esVocal(char letra){
 			return 0;
 	}
 }
-
-
