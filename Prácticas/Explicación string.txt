@@ -1,0 +1,43 @@
+Alfabetos, símbolos y cadenas
+Operaciones con cadenas:
+- Concatenación de dos cadenas
+- Prefijos y sufijos de una cadena
+- Subcadena y subsecuencia (cadena dentro de otra y quitarle elementos a una cadena)
+- Inversión
+- Potencia de una cadena
+
+Ejercicios 01: Cadenas
+
+Concatenación de cadenas:
+Sean u y v dos cadenas sobre el mismo alfabeto, la concatenación de u y v es una nueva cadena w que se optiene yuxtapiniendo primero u y detrás v, escribimos:
+w = uv
+
+Prefijos y sufijos:
+Sea w una cadena sobre cierto alfabeto. Sean u y v dos cadenas
+
+Subcadena:
+Se obtiene al eliminar cualquier prefijo y cualquier sufijo de s.
+velocidad, loci y lambda son subcadenas de velocidad
+
+Una subsecuencia de s es cualquiera cadena que se forma dmediante la elminación de cero o más posiciones no necesariamente no consecutivas de s.
+veoci es subsecuencia de velocidad.
+
+
+Sea S={!}, x=!. Definir las siguientes cadenas: xx, xxx, x^3, x^8, x^0. ¿Cuáles son sus longitudes
+
+7 operaciones:
+Concatenación (Tiene que mostrar uv y vu)
+Prefijo (eliminar 0 o más del final, para ambas cadenas)
+Sufijo (eliminar 0 o más del inicio, para ambas cadenas)
+Subcadena (eliminar un prefijo y eliminar un sufijo, hay que pedir la longitud del prefijo y del sufijo, para ambas cadenas)
+Subsecuencia (lee un entero y luego lee los símbolos que quieres eliminar)
+Invertir (imprime las cadenas al revés)
+Potencia (recibe un entero (positivo o negativo), si es positivo se concatena el número de veces, si es 0 se imprime lambda, si es negativo se imprime la cadena concatenada de forma inversa)
+
+Crear programa con menú. Necesitamos dos cadenas: U y V
+Tiene que tener validaciones y ser cíclico
+La cadena vacía debe imprimir lambda
+El programa tiene que leer ambas cadenas.
+Ej:
+	u = "hola"
+	v = "mundo"
