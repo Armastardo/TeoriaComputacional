@@ -7,68 +7,21 @@ typedef struct nodo{
 	struct nodo * siguiente;
 } Nodo;
 
-void listAppend(Nodo *, Nodo *);
-
-Nodo * llenarLista();
+Nodo * createList();
 void printList(Nodo *, char);
-Nodo * concatenar(Nodo *, Nodo *);
-Nodo * potencia(Nodo *, int pow);
-Nodo * invertirElementos(Nodo *);
-Nodo * invertirLista(Nodo *);
-Nodo * invertirListayElementos(Nodo *);
-Nodo * unirListas(Nodo *, Nodo *);
+
+void listAppend(Nodo *, Nodo *);
+Nodo * concatLists(Nodo *, Nodo *);
+Nodo * listPow(Nodo *, int pow);
+Nodo * reverseListElements(Nodo *);
+Nodo * reverseList(Nodo *);
+Nodo * listUnion(Nodo *, Nodo *);
 int contains(Nodo *, char *);
 
-int main(){
-	Nodo * lenguajeU = llenarLista();
-	Nodo * lenguajeV = llenarLista();
-
-	//printList(lenguajeU, 'U');
-	//printList(lenguajeV, 'V');
-
-	printf("\n== Unio'n de las listas ==\n");
-	printList(unirListas(lenguajeU ,lenguajeV), 'J');
-
-	/*printf("\n== Concatenacio'n UV == \n");
-	printList(concatenar(lenguajeU, lenguajeV), 'C');
-	
-	printf("\n== Concatenacio'n VU == \n");
-	printList(concatenar(lenguajeV, lenguajeU), 'C');
-
-	printf("\n== Resultado de la inversio'n U ==\n");
-	Nodo * inverted = invertirListayElementos(lenguajeU);
-	printList(inverted, 'I');
-
-
-	printf("\n== Resultado de la inversio'n V ==\n");
-	inverted = invertirListayElementos(lenguajeV);
-	printList(inverted, 'I');*/
-
-
-
-	/*while(1){
-		printf("Escribe la potencia: ");
-		int pow = readIntegerInput();
-
-		printf("== Resultado de la potencia ==\n");
-
-		if(pow < 0){
-			Nodo * potenciaLenguaje = potencia(lenguajeU, pow*-1);
-			printList(invertirListayElementos(potenciaLenguaje), 'P');
-		}else{
-			Nodo * potenciaLenguaje = potencia(lenguajeU, pow);
-			printList((potenciaLenguaje), 'P');
-		}	
-	}*/
-
-	return 0;
-
-}
-
-Nodo * llenarLista(){
+Nodo * createList(){
 	Nodo * retorno = NULL;
 
-	printf("Taman~o de la lista: ");
+	printf("Cantidad de elementos en el lenguaje: ");
 	int listLen = readIntegerInput();
 	int i = 0;	
 
@@ -92,12 +45,7 @@ Nodo * llenarLista(){
 	return retorno;
 }
 
-Nodo * concatenar(Nodo * lenguajeU, Nodo * lenguajeV){
-	/* Ahora mismo:
-	Concatenación de listas. Dada la lista U y lista V que contienen un
-	lenguaje cada una, imprimir la concatenación de sus elementos.
-	*/
-	
+Nodo * concatLists(Nodo * lenguajeU, Nodo * lenguajeV){
 	Nodo * listConcat = NULL;
 
 	Nodo * auxU = lenguajeU;
@@ -107,13 +55,11 @@ Nodo * concatenar(Nodo * lenguajeU, Nodo * lenguajeV){
 		while(auxV){
 			Nodo * nuevo = malloc(sizeof(Nodo));
 			nuevo -> string = concat(auxU -> string, auxV -> string);
-
 			if(!listConcat){
 				listConcat = nuevo;
 			}else{
 				listAppend(listConcat, nuevo);
 			}
-
 			auxV = auxV -> siguiente;
 		}
 		auxU = auxU -> siguiente;
@@ -121,7 +67,7 @@ Nodo * concatenar(Nodo * lenguajeU, Nodo * lenguajeV){
 	return listConcat;
 }
 
-Nodo * unirListas(Nodo * lenguajeU, Nodo *lenguajeV){
+Nodo * listUnion(Nodo * lenguajeU, Nodo *lenguajeV){
 	Nodo * listasUnidas = NULL;
 
 	Nodo * aux = lenguajeU;
@@ -156,30 +102,32 @@ Nodo * unirListas(Nodo * lenguajeU, Nodo *lenguajeV){
 		}
 		aux = aux -> siguiente;
 	}
-
-
 	return listasUnidas;
 }
 
-Nodo * invertirElementos(Nodo * lenguaje){
+Nodo * reverseListElements(Nodo * lenguaje){
+	Nodo * invertida = NULL;
 	Nodo * aux = lenguaje;
 
-	Nodo * invertida = NULL;
-
 	while(aux){
+		
 		Nodo * nuevo = malloc(sizeof(Nodo));
+		
 		nuevo -> string = invert(aux -> string);
+		nuevo -> siguiente = NULL;
+		
 		if(!invertida){
-				invertida = nuevo;
-			}else{
-				listAppend(invertida, nuevo);
-			}
+			invertida = nuevo;
+		}else{
+			listAppend(invertida, nuevo);
+		}
 		aux = aux -> siguiente;
 	}
+
 	return invertida;
 }
 
-Nodo * invertirLista(Nodo * lenguaje){
+Nodo * reverseList(Nodo * lenguaje){
 	Nodo * listaInvertida = NULL;
 	Nodo * aux = lenguaje;
 
@@ -202,35 +150,12 @@ Nodo * invertirLista(Nodo * lenguaje){
 	return listaInvertida;
 }
 
-Nodo * invertirListayElementos(Nodo * lenguaje){
-	Nodo * listaInvertida = NULL;
-	Nodo * aux = lenguaje;
-
-	while(aux){
-		if(!listaInvertida){
-			listaInvertida = malloc(sizeof(Nodo));
-
-			listaInvertida -> string = invert(aux -> string);
-			listaInvertida -> siguiente = NULL;
-		}else{
-			Nodo * nuevo = malloc(sizeof(Nodo));
-			nuevo -> siguiente = listaInvertida;
-			nuevo -> string = invert(aux -> string);
-
-			listaInvertida = nuevo;
-		}
-		aux = aux -> siguiente;
-
-	}
-	return listaInvertida;
-}
-
-Nodo * potencia(Nodo * lenguaje, int pow){
+Nodo * listPow(Nodo * lenguaje, int pow){
 
 	Nodo * lenguajePotenciado = NULL;
 
 	if(pow > 1){
-		return concatenar(lenguaje, potencia(lenguaje, pow-1));
+		return concatLists(lenguaje, listPow(lenguaje, pow-1));
 	}else{
 		return lenguaje;
 	}
