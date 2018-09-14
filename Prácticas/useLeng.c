@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "leng.c"
 
+void menu();
+
 int main(){
 
 	printf(" == Bienvenido == \n");
@@ -14,11 +16,12 @@ int main(){
 	Nodo * lenguajeU = createList();
 	Nodo * lenguajeV = createList();
 
-	printf("\n == Elige una opcio'n del menu ==");
-	/*int opc = 0;
-	while(opc != 8){
+	
 
-	}*/
+	int opc = 0;
+	while(opc != 8){
+		printf("\n == Elige una opcio'n del menu ==");
+	}
 
 	
 
