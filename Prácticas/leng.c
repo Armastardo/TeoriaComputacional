@@ -17,6 +17,7 @@ Nodo * invertirElementos(Nodo *);
 Nodo * invertirLista(Nodo *);
 Nodo * invertirListayElementos(Nodo *);
 Nodo * unirListas(Nodo *, Nodo *);
+int existeEnLista(Nodo *, char *);
 
 int main(){
 	Nodo * lenguajeU = llenarLista();
@@ -25,23 +26,40 @@ int main(){
 	//imprimirLista(lenguajeU, 'U');
 	//imprimirLista(lenguajeV, 'V');
 
+	printf("\n== Unio'n de las listas ==\n");
 	imprimirLista(unirListas(lenguajeU ,lenguajeV), 'J');
 
-	/*Invertir lista
+	/*printf("\n== Concatenacio'n UV == \n");
+	imprimirLista(concatenar(lenguajeU, lenguajeV), 'C');
+	
+	printf("\n== Concatenacio'n VU == \n");
+	imprimirLista(concatenar(lenguajeV, lenguajeU), 'C');
 
-	printf("== Resultado de la inversio'n ==\n");
+	printf("\n== Resultado de la inversio'n U ==\n");
 	Nodo * inverted = invertirListayElementos(lenguajeU);
+	imprimirLista(inverted, 'I');
+
+
+	printf("\n== Resultado de la inversio'n V ==\n");
+	inverted = invertirListayElementos(lenguajeV);
 	imprimirLista(inverted, 'I');*/
 
-	/*Potencia
 
-	printf("Escribe la potencia: ");
-	int pow = readIntegerInput();
 
-	printf("== Resultado de la potencia ==\n");
-	Nodo * potenciaLenguaje = potencia(lenguajeU, pow);
-	imprimirLista(potenciaLenguaje, 'P');
-	free(potenciaLenguaje);*/
+	/*while(1){
+		printf("Escribe la potencia: ");
+		int pow = readIntegerInput();
+
+		printf("== Resultado de la potencia ==\n");
+
+		if(pow < 0){
+			Nodo * potenciaLenguaje = potencia(lenguajeU, pow*-1);
+			imprimirLista(invertirListayElementos(potenciaLenguaje), 'P');
+		}else{
+			Nodo * potenciaLenguaje = potencia(lenguajeU, pow);
+			imprimirLista((potenciaLenguaje), 'P');
+		}	
+	}*/
 
 	return 0;
 
@@ -116,7 +134,7 @@ Nodo * unirListas(Nodo * lenguajeU, Nodo *lenguajeV){
 		if(!listasUnidas){
 			listasUnidas = nuevo;
 		}else{
-			listAppend(listasUnidas, nuevo);
+			listAppend(listasUnidas, nuevo);	
 		}
 		aux = aux -> siguiente;
 	}
@@ -132,7 +150,9 @@ Nodo * unirListas(Nodo * lenguajeU, Nodo *lenguajeV){
 		if(!listasUnidas){
 			listasUnidas = nuevo;
 		}else{
-			listAppend(listasUnidas, nuevo);
+			if(!existeEnLista(listasUnidas, nuevo->string)){
+				listAppend(listasUnidas, nuevo);	
+			}
 		}
 		aux = aux -> siguiente;
 	}
@@ -237,4 +257,16 @@ void listAppend(Nodo * lista, Nodo * elemento){
 		aux = aux -> siguiente;
 	}
 	aux -> siguiente = elemento;
+}
+
+int existeEnLista(Nodo * lista, char * elemento){
+	Nodo * aux = lista;
+	while(aux){
+		if(compareString(aux -> string, elemento)){
+			return 1;
+		}
+		aux = aux -> siguiente;
+	}
+	return 0;
+
 }
