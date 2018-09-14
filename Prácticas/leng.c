@@ -10,39 +10,39 @@ typedef struct nodo{
 void listAppend(Nodo *, Nodo *);
 
 Nodo * llenarLista();
-void imprimirLista(Nodo *, char);
+void printList(Nodo *, char);
 Nodo * concatenar(Nodo *, Nodo *);
 Nodo * potencia(Nodo *, int pow);
 Nodo * invertirElementos(Nodo *);
 Nodo * invertirLista(Nodo *);
 Nodo * invertirListayElementos(Nodo *);
 Nodo * unirListas(Nodo *, Nodo *);
-int existeEnLista(Nodo *, char *);
+int contains(Nodo *, char *);
 
 int main(){
 	Nodo * lenguajeU = llenarLista();
 	Nodo * lenguajeV = llenarLista();
 
-	//imprimirLista(lenguajeU, 'U');
-	//imprimirLista(lenguajeV, 'V');
+	//printList(lenguajeU, 'U');
+	//printList(lenguajeV, 'V');
 
 	printf("\n== Unio'n de las listas ==\n");
-	imprimirLista(unirListas(lenguajeU ,lenguajeV), 'J');
+	printList(unirListas(lenguajeU ,lenguajeV), 'J');
 
 	/*printf("\n== Concatenacio'n UV == \n");
-	imprimirLista(concatenar(lenguajeU, lenguajeV), 'C');
+	printList(concatenar(lenguajeU, lenguajeV), 'C');
 	
 	printf("\n== Concatenacio'n VU == \n");
-	imprimirLista(concatenar(lenguajeV, lenguajeU), 'C');
+	printList(concatenar(lenguajeV, lenguajeU), 'C');
 
 	printf("\n== Resultado de la inversio'n U ==\n");
 	Nodo * inverted = invertirListayElementos(lenguajeU);
-	imprimirLista(inverted, 'I');
+	printList(inverted, 'I');
 
 
 	printf("\n== Resultado de la inversio'n V ==\n");
 	inverted = invertirListayElementos(lenguajeV);
-	imprimirLista(inverted, 'I');*/
+	printList(inverted, 'I');*/
 
 
 
@@ -54,10 +54,10 @@ int main(){
 
 		if(pow < 0){
 			Nodo * potenciaLenguaje = potencia(lenguajeU, pow*-1);
-			imprimirLista(invertirListayElementos(potenciaLenguaje), 'P');
+			printList(invertirListayElementos(potenciaLenguaje), 'P');
 		}else{
 			Nodo * potenciaLenguaje = potencia(lenguajeU, pow);
-			imprimirLista((potenciaLenguaje), 'P');
+			printList((potenciaLenguaje), 'P');
 		}	
 	}*/
 
@@ -150,7 +150,7 @@ Nodo * unirListas(Nodo * lenguajeU, Nodo *lenguajeV){
 		if(!listasUnidas){
 			listasUnidas = nuevo;
 		}else{
-			if(!existeEnLista(listasUnidas, nuevo->string)){
+			if(!contains(listasUnidas, nuevo->string)){
 				listAppend(listasUnidas, nuevo);	
 			}
 		}
@@ -236,7 +236,7 @@ Nodo * potencia(Nodo * lenguaje, int pow){
 	}
 }
 
-void imprimirLista(Nodo * lista, char nombre){
+void printList(Nodo * lista, char nombre){
 	Nodo * aux = lista;
 
 	printf("Lista de elementos en %c = {", nombre);
@@ -259,7 +259,7 @@ void listAppend(Nodo * lista, Nodo * elemento){
 	aux -> siguiente = elemento;
 }
 
-int existeEnLista(Nodo * lista, char * elemento){
+int contains(Nodo * lista, char * elemento){
 	Nodo * aux = lista;
 	while(aux){
 		if(compareString(aux -> string, elemento)){
