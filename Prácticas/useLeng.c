@@ -21,14 +21,17 @@ int main(){
 		int pow = readIntegerInput();
 
 		printf("== Resultado de la potencia ==\n");
+		Nodo * potenciaLenguaje = NULL;
 
 		if(pow < 0){
-			Nodo * potenciaLenguaje = listPow(lenguajeU, pow*-1);
+			potenciaLenguaje = listPow(lenguajeU, pow*-1);
 			printList(reverseList(potenciaLenguaje), 'P');
 		}else{
-			Nodo * potenciaLenguaje = listPow(lenguajeU, pow);
+			potenciaLenguaje = listPow(lenguajeU, pow);
 			printList((potenciaLenguaje), 'P');
 		}	
+
+		free(potenciaLenguaje)
 	}
 	
 

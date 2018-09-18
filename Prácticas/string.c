@@ -63,7 +63,7 @@ char * concat(char * one, char * two){
 	}else if(emptyString(two)){
 		conc = one;
 	}else{
-		conc = malloc(sizeString(one) + sizeString(two));
+		conc = malloc(sizeString(one) + sizeString(two) + 1);
 		int i = 0;
 		int j = 0;
 		while(one[i]){
