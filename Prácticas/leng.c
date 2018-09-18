@@ -46,24 +46,33 @@ Nodo * createList(){
 }
 
 Nodo * concatLists(Nodo * lenguajeU, Nodo * lenguajeV){
+	
 	Nodo * listConcat = NULL;
 
 	Nodo * auxU = lenguajeU;
+	Nodo * auxV = NULL;
 
 	while(auxU){
-		Nodo * auxV = lenguajeV;
+		auxV = lenguajeV;
+
 		while(auxV){
 			Nodo * nuevo = malloc(sizeof(Nodo));
+
 			nuevo -> string = concat(auxU -> string, auxV -> string);
+			nuevo -> siguiente = NULL;
+
 			if(!listConcat){
 				listConcat = nuevo;
 			}else{
 				listAppend(listConcat, nuevo);
 			}
+
 			auxV = auxV -> siguiente;
+
 		}
 		auxU = auxU -> siguiente;
 	}
+
 	return listConcat;
 }
 
@@ -151,9 +160,6 @@ Nodo * reverseList(Nodo * lenguaje){
 }
 
 Nodo * listPow(Nodo * lenguaje, int pow){
-
-	Nodo * lenguajePotenciado = NULL;
-
 	if(pow > 1){
 		return concatLists(lenguaje, listPow(lenguaje, pow-1));
 	}else{

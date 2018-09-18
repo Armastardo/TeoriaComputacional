@@ -14,26 +14,40 @@ int main(){
 
 	printf("\n == Llenado de lenguajes ==\n");
 	Nodo * lenguajeU = createList();
-	Nodo * lenguajeV = createList();
+	//Nodo * lenguajeV = createList();
 
+	while(1){
+		printf("Escribe la potencia: ");
+		int pow = readIntegerInput();
+
+		printf("== Resultado de la potencia ==\n");
+
+		if(pow < 0){
+			Nodo * potenciaLenguaje = listPow(lenguajeU, pow*-1);
+			printList(reverseList(potenciaLenguaje), 'P');
+		}else{
+			Nodo * potenciaLenguaje = listPow(lenguajeU, pow);
+			printList((potenciaLenguaje), 'P');
+		}	
+	}
 	
 
-	int opc = 0;
+	/*int opc = 0;
 	while(opc != 8){
 		printf("\n == Elige una opcio'n del menu ==");
-	}
+	}*/
 
 	
 
 	//printList(lenguajeU, 'U');
 	//printList(lenguajeV, 'V');
 
-	printf("\n== Unio'n de las listas ==\n");
+	/*printf("\n== Unio'n de las listas ==\n");
 	printList(listUnion(lenguajeU ,lenguajeV), 'J');
 
 	printf("\n== Resultado de la inversio'n U ==\n");
 	Nodo * inverted = reverseList(lenguajeU);
-	printList(reverseListElements(inverted), 'I');
+	printList(reverseListElements(inverted), 'I');*/
 
 	/*printf("\n== Concatenacio'n UV == \n");
 	printList(concatLists(lenguajeU, lenguajeV), 'C');
@@ -58,13 +72,13 @@ int main(){
 
 		if(pow < 0){
 			Nodo * potenciaLenguaje = listPow(lenguajeU, pow*-1);
-			printList(reverseListyElementos(potenciaLenguaje), 'P');
+			printList(reverseList(potenciaLenguaje), 'P');
 		}else{
 			Nodo * potenciaLenguaje = listPow(lenguajeU, pow);
 			printList((potenciaLenguaje), 'P');
 		}	
-	}*/
-
+	}
+*/
 	return 0;
 
 }
