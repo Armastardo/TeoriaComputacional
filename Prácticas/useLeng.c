@@ -31,7 +31,7 @@ int main(){
 			printList((potenciaLenguaje), 'P');
 		}	
 
-		free(potenciaLenguaje)
+		free(potenciaLenguaje);
 	}
 	
 

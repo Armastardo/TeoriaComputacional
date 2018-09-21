@@ -4,10 +4,10 @@
 
 int main(){
 
-	char * states = {"0123"};
+	char * states = {"01234"};
 
 	int current = 0;
-	int final = 0;
+	int final = 4;
 
 	Nodo * input = createList();
 	Nodo * aux = input;
@@ -21,29 +21,36 @@ int main(){
 		switch(states[current]){
 			case '0':
 				if(mod == 1){
-					current = 1;
-				}else if(mod == 0){
 					current = 2;
+				}else if(mod == 0){
+					current = 1;
 				}
 			break;
 
 			case '1':
 				if(mod == 1){
-					current = 0;
-				}else if(mod == 0){
 					current = 3;
+				}else if(mod == 0){
+					current = 1;
 				}
 			break;
 			
 			case '2':
 				if(mod == 1){
-					current = 3;
+					current = 2;
 				}else if(mod == 0){
-					current = 0;
+					current = 1;
 				}
 			break;
 			
 			case '3':
+				if(mod == 1){
+					current = 4;
+				}else if(mod == 0){
+					current = 1;
+				}
+			break;
+			case '4':
 				if(mod == 1){
 					current = 2;
 				}else if(mod == 0){
