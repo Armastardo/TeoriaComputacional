@@ -35,9 +35,9 @@ void addState(Vector ** states, int state){
 
 void deleteState(Vector ** states, int position){
 	if(position == 0){
-		printf("La posicio'n es 0\n");
+		//printf("La posicio'n es 0\n");
 		*states = (*states) -> next;
-		printf("El nuevo valor inicial es [%i]\n", (*states) -> value);
+		//printf("El nuevo valor inicial es [%i]\n", (*states) -> value);
 	}else{
 		int i = 0;
 		Vector * aux = *states;
@@ -46,5 +46,14 @@ void deleteState(Vector ** states, int position){
 			i++;
 		}
 		aux -> next = aux -> next -> next;
+	}
+}
+
+void deleteStates(Vector ** states, Vector * delete){
+	int i = 0;
+	while(delete){
+		deleteState(states, (delete -> value)-i);
+		delete = delete -> next;
+		i++;
 	}
 }

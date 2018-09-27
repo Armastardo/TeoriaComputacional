@@ -38,11 +38,17 @@ int main(){
 					if(compareString(mod, "0")){
 						auxState -> value = 1;
 						addState(&add, 0);
+					}else if(compareString(mod, "1")){
+						//do nothig
+					}else{
+						addState(&delete, i);
 					}
 				break;
 				case 1:
 					if(compareString(mod, "1")){
 						auxState -> value = 2;
+					}else{
+						addState(&delete, i);
 					}
 				break;
 			}
@@ -50,6 +56,8 @@ int main(){
 			auxState = auxState -> next;
 		}
 		
+		deleteStates(&states, delete);
+		printVector(states);
 		while(add){
 			addState(&states, add -> value);
 			add = add -> next;
