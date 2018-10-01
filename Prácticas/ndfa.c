@@ -55,9 +55,6 @@ int main(){
 			i++;
 			auxState = auxState -> next;
 		}
-		
-		deleteStates(&states, delete);
-		printVector(states);
 		while(add){
 			addState(&states, add -> value);
 			add = add -> next;
