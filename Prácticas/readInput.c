@@ -17,7 +17,7 @@ char * readStringInput(){
 		copyString("\u03BB", string);
 
 	}else{
-		string = malloc(sizeString(input));
+		string = malloc(sizeString(input)+1);
 		copyString(input, string);
 	}
 	cleanStdin();
