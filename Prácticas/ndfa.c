@@ -7,7 +7,6 @@
 int main(){
 	
 	/*Generación de estados, así como al que debe llegar*/
-	char * qStates = {"012"};
 	int start = 0;
 	int final = 2;
 
@@ -20,8 +19,18 @@ int main(){
 	Nodo * input = createList();
 	Nodo * auxInput = input;
 
+
+	printf("\n == Recorrido == \n");
+
+	printf("\nEstado inicial: [q%i]\n", start);
+
+	int espacio = 3;
+	int nivel = 0;
+
 	/*Recorremos la entrada*/
 	while(auxInput){
+
+		printf("\n===== Evaluacio'n nu'mero %i ======\n", nivel+1);
 
 		char * mod = auxInput -> string;
 
@@ -30,40 +39,65 @@ int main(){
 		Vector * delete = NULL;
 		Vector * add = NULL;
 
+
+
 		int i = 0;
 		while(auxState){
 
 			switch(auxState -> value){
 				case 0:
 					if(compareString(mod, "0")){
+						printf("== El estado nu'mero %i es q0 == \n", i);
 						auxState -> value = 1;
 						addState(&add, 0);
+						printf("La entrada fue 0\n");
+						printf("=== El estado nu'mero %i paso' de q0 a q1\n", i);
+						printf("=== Se creo el estado q0\n");
 					}else if(compareString(mod, "1")){
+						printf("La entrada fue 1\n");
+						printf("=== El estado nu'mero %i paso' de q0 a q0\n", i);
 						//do nothig
 					}else{
 						addState(&delete, i);
+						printf("La entrada no fue reconocida\n");
+						printf("=== El estado nu'mero %i (q0) fue eliminado\n", i);
 					}
 				break;
 				case 1:
+					printf("=== El estado nu'mero %i es q1 == \n", i);
 					if(compareString(mod, "1")){
 						auxState -> value = 2;
+						printf("La entrada fue 1\n");
+						printf("=== El estado nu'mero %i paso' de q1 a q2\n", i);
 					}else{
 						addState(&delete, i);
+						printf("La entrada no fue reconocida\n");
+						printf("=== El estado nu'mero  %i (q1) fue eliminado\n", i);
 					}
 				break;
 				case 2:
-					addState(&delete, i);
+					if(compareString(mod, "2")){
+						printf("La entrada fue 2\n");
+						printf("=== El estado nu'mero %i paso' de q2 a q2\n", i);
+					}else{
+						addState(&delete, i);
+						printf("La entrada no fue reconocida\n");	
+						printf("=== El estado nu'mero %i (q2) fue eliminado\n", i);
+					}
 				break;
 			}
 			i++;
 			auxState = auxState -> next;
 		}
+		printf("\n");
 		deleteStates(&states, delete);
 		while(add){
 			addState(&states, add -> value);
 			add = add -> next;
 		}
 		auxInput = auxInput -> siguiente;
+
+		nivel++;
 	}
 
 	/*Verificamos si es una cadena válida e imprimimos el resultado*/
@@ -71,15 +105,18 @@ int main(){
 	
 	int valid = 0;
 
-	while(states){
-		int i = 0;
-		int current = states -> value;
-		printf("\nEstado final nu'mero [%i]: Q%i", i+1, current);
-		if(current == final){
-			valid = 1;
-			break;
+	if(states == NULL){
+		printf("\nNo hay ningu'n estado\n");
+	}else{
+		while(states){
+			int i = 0;
+			int current = states -> value;
+			printf("\nEstado final nu'mero [%i]: Q%i", i+1, current);
+			if(current == final){
+				valid = 1;
+			}
+			states = states -> next;
 		}
-		states = states -> next;
 	}
 	if(valid){
 			printf("\nEs una cadena va'lida\n");
