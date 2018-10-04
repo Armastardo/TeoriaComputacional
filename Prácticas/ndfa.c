@@ -51,10 +51,14 @@ int main(){
 						addState(&delete, i);
 					}
 				break;
+				case 2:
+					addState(&delete, i);
+				break;
 			}
 			i++;
 			auxState = auxState -> next;
 		}
+		deleteStates(&states, delete);
 		while(add){
 			addState(&states, add -> value);
 			add = add -> next;
@@ -70,7 +74,7 @@ int main(){
 	while(states){
 		int i = 0;
 		int current = states -> value;
-		printf("\nEstado final nu'mero [%i]: Q%i - ", i+1, current);
+		printf("\nEstado final nu'mero [%i]: Q%i", i+1, current);
 		if(current == final){
 			valid = 1;
 			break;
@@ -78,9 +82,9 @@ int main(){
 		states = states -> next;
 	}
 	if(valid){
-			printf("Es una cadena va'lida\n");
+			printf("\nEs una cadena va'lida\n");
 		}else{
-			printf("No es una cadena va'lida\n");
+			printf("\nNo es una cadena va'lida\n");
 		}
 
 	return 0;
