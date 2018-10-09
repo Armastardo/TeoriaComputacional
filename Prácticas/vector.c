@@ -33,6 +33,13 @@ void addState(Vector ** states, int state){
 	}
 }
 
+void addStates(Vector ** states, Vector * add){
+	while(add){
+		addState(states, add -> value);
+		add = add -> next;
+	}
+}
+
 void deleteState(Vector ** states, int position){
 	if(position == 0){
 		//printf("La posicio'n es 0\n");
