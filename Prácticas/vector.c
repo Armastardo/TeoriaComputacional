@@ -64,3 +64,10 @@ void deleteStates(Vector ** states, Vector * delete){
 		i++;
 	}
 }
+
+void deleteVector(Vector * states){
+	if(states){
+		deleteVector(states -> next);
+	}
+	free(states);
+}

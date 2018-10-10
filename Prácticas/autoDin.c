@@ -26,37 +26,64 @@ int main(){
 	automat -> end = 1;
 	automat -> states = states;
 
-	State * current = automat -> states;
-	while(automat -> start != current -> value){
-		current = current -> next;
-	}
 
-	printf("El estado inicial es q%i\n", current -> value);
-
-	Vector * new = NULL;
+	printf("El estado inicial es q%i\n", automat -> start);
+	
+	Vector * v = NULL;
+	addState(&v, automat -> start);
 
 	int i = 0;
 	while(a[i]){
-		printf("El estado actual es q%i\n", current -> value);
-		int value = a[i] - '0';
-		printf("El caracter nu'mero %i es %c.\n", i, a[i]);
-		Transitions * aux = current -> table;
-		
-		while(aux){
 
-			printf("== %i vs %i ==\n", aux -> accepted, value);
-			
-			if(value == aux -> accepted){
-				printf("Valor aceptado\n");
-				addStates(&new, aux -> result);
+		printVector(v);
+		Vector * new = NULL;
+
+		while(v){
+
+			State * current = NULL;
+			State * auxS = states;
+			while(auxS){
+				if(auxS -> value == v -> value){
+					current = auxS;
+				}
+				auxS = auxS -> next;
 			}
-			aux = aux -> next;
-		}
 
+
+			if(current){
+				printf("El estado actual es q%i\n", current -> value);
+				int value = a[i] - '0';
+				printf("El caracter nu'mero %i es %c.\n", i, a[i]);
+				Transitions * aux = current -> table;
+				
+				while(aux){
+
+					printf("== %i vs %i ==\n", aux -> accepted, value);
+					
+					if(value == aux -> accepted){
+						printf("Valor aceptado\n");
+						addStates(&new, aux -> result);
+					}
+					aux = aux -> next;
+				}
+	
+			}
+			
+			v = v-> next;
+
+		}
+		
+		//printf("Borrando el vector V\n");
+		deleteVector(v);
+		v = NULL;
+
+		//printf("Agregando los nuevos estados al vector V\n");
+		addStates(&v, new);
+		
 		i++;
 	}
 
-	printVector(new);
+	//printVector(new);
 
 	return 0;
 }
