@@ -73,11 +73,8 @@ int main(){
 
 		}
 		
-		//printf("Borrando el vector V\n");
 		deleteVector(v);
 		v = NULL;
-
-		//printf("Agregando los nuevos estados al vector V\n");
 		addStates(&v, new);
 		
 		i++;
