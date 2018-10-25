@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "string.c"
 #include "ndfaFile.c"
+#include "readInput.c"
 
 Vector * splitInts(char *);
 
@@ -176,6 +176,65 @@ int main(){
 	}
 
 	fclose(fp);
+
+	printf("Escribe la cadena: ");
+	char * a = readStringInput();
+
+	Vector * v = NULL;
+	addState(&v, automat -> start);
+	addState(&v, 1);
+
+	int i = 0;
+
+	while(a[i]){
+
+		//printVector(v);
+		Vector * new = NULL;
+
+		while(v){
+
+			State * current = NULL;
+			State * auxS = states;
+			while(auxS){
+				if(auxS -> value == v -> value){
+					current = auxS;
+				}
+				auxS = auxS -> next;
+			}
+
+
+			if(current){
+				printf("El estado actual es q%i\n", current -> value);
+				int value = a[i];
+				printf("El caracter nu'mero %i es %c.\n", i, a[i]);
+				Transitions * aux = current -> table;
+				
+				while(aux){
+
+					printf("== %c vs %c ==\n", aux -> accepted, value);
+					
+					if(value == aux -> accepted){
+						printf("Valor aceptado\n");
+						addStates(&new, aux -> result);
+					}
+					aux = aux -> next;
+				}
+	
+			}
+			
+			v = v-> next;
+
+		}
+		
+		deleteVector(v);
+		v = NULL;
+		addStates(&v, new);
+		
+		i++;
+	}
+
+	printf("El conjunto de estados final es:\n");
+	printVector(v);
 }
 
 Vector * splitInts(char * buff){

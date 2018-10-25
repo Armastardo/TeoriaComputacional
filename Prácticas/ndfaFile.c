@@ -3,7 +3,7 @@
 
 //Transiciones de la tabla de estados
 typedef struct transitions{
-	int accepted;
+	char accepted;
 	Vector * result;
 	struct transitions * next;
 }Transitions;
@@ -18,7 +18,7 @@ typedef struct state{
 //Estructura del autómata
 typedef struct automat{
 	int start;
-	int end;
+	Vector * end;
 	State * states;
 } Automat;
 

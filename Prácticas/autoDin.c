@@ -26,16 +26,16 @@ int main(){
 	automat -> end = 1;
 	automat -> states = states;
 
-
 	printf("El estado inicial es q%i\n", automat -> start);
 	
 	Vector * v = NULL;
 	addState(&v, automat -> start);
+	addState(&v, 1);
 
 	int i = 0;
 	while(a[i]){
 
-		printVector(v);
+		//printVector(v);
 		Vector * new = NULL;
 
 		while(v){
