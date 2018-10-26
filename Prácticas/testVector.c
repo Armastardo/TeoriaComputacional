@@ -3,7 +3,7 @@
 #include "vector.c"
 
 int main(){
-	Vector * states = NULL;
+	Vector * states zzz= NULL;
 
 	addState(&states, 1);
 	addState(&states, 3);

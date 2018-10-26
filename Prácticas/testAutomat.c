@@ -7,7 +7,7 @@ Vector * splitInts(char *);
 
 int main(){
 	FILE * fp;
-	fp = fopen("test.txt", "r");
+	fp = fopen("3.txt", "r");
 	char buff[250];
 
 	//Lo primero que se lee del archivo son los estados
@@ -182,7 +182,6 @@ int main(){
 
 	Vector * v = NULL;
 	addState(&v, automat -> start);
-	addState(&v, 1);
 
 	int i = 0;
 
@@ -204,17 +203,24 @@ int main(){
 
 
 			if(current){
-				printf("El estado actual es q%i\n", current -> value);
+				printf("q%i ->", current -> value);
 				int value = a[i];
-				printf("El caracter nu'mero %i es %c.\n", i, a[i]);
+				//printf("El caracter nu'mero %i es %c.\n", i, a[i]);
 				Transitions * aux = current -> table;
 				
 				while(aux){
 
-					printf("== %c vs %c ==\n", aux -> accepted, value);
+					//printf("== %c vs %c ==\n", aux -> accepted, value);
 					
 					if(value == aux -> accepted){
-						printf("Valor aceptado\n");
+						//printf("Valor aceptado\n");
+						
+						Vector * auxResult = aux -> result;
+						while(auxResult){
+							printf("[q%i] ", auxResult -> value);
+							auxResult = auxResult -> next;
+						}printf("\n");
+						
 						addStates(&new, aux -> result);
 					}
 					aux = aux -> next;
@@ -235,6 +241,26 @@ int main(){
 
 	printf("El conjunto de estados final es:\n");
 	printVector(v);
+
+	int valid = 0;
+
+	auxV = automat -> end;
+	while(auxV){
+		Vector * v2 = v;
+		while(v2){
+			if(v2 -> value == auxV -> value){
+				valid = 1;
+			}
+			v2 = v2 -> next;
+		}
+		auxV = auxV -> next;
+	}
+
+	if(valid){
+		printf("Es una cadena va'lida");
+	}else{
+		printf("No es una cadena va'lida");
+	}
 }
 
 Vector * splitInts(char * buff){

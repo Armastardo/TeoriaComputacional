@@ -1,0 +1,11 @@
+Teoría Computacional - 15 de octubre del 2018
+
+
+Expresión regular:
+Serie de reglas que dfeine un lenguaje regular. El autómata es la mmáquina de stados que va a validad el lenguaje regular. "Algo que describe al autómata"
+
+A partir de una expresión regular se puede tener un autómata finito no determinista (AFND) y a partir de un AFND se puede obtener un autómata finito determinista (AFN).
+
+Para pasar de una expresión regular a un AFND se utiliza el teorema de thomson y para pasar de un AFND a un AFD se utiliza la construcción de subconjuntos.
+
+-> (q0) - a -> (q1) - b -> ((q2))
