@@ -2,12 +2,144 @@
 #include <stdio.h>
 #include "ndfaFile.c"
 #include "readInput.c"
+#include "path.c"
 
 Vector * splitInts(char *);
+Automat * createAutomat(char *);
+void showInfo(Automat *);
 
 int main(){
+	
+	printf("Escribe el nombre del archivo (con extensio'n): ");
+	char * name = readStringInput();
+	Automat * automat= createAutomat(name);
+	showInfo(automat);
+
+	printf("Escribe la cadena: ");
+	char * a = readStringInput();
+
+	Vector * v = NULL;
+	addState(&v, automat -> start);
+
+	int i = 0;
+
+	while(a[i]){
+
+		//printVector(v);
+		Vector * new = NULL;
+
+		while(v){
+
+			State * current = NULL;
+			State * auxS = automat -> states;
+			while(auxS){
+				if(auxS -> value == v -> value){
+					current = auxS;
+				}
+				auxS = auxS -> next;
+			}
+
+
+			if(current){
+				printf("q%i ->", current -> value);
+				int value = a[i];
+				//printf("El caracter nu'mero %i es %c.\n", i, a[i]);
+				Transitions * aux = current -> table;
+				
+				while(aux){
+
+					//printf("== %c vs %c ==\n", aux -> accepted, value);
+					
+					if(value == aux -> accepted){
+						//printf("Valor aceptado\n");
+						
+						Vector * auxResult = aux -> result;
+						while(auxResult){
+							printf("[q%i] ", auxResult -> value);
+							auxResult = auxResult -> next;
+						}printf("\n");
+						
+						addStates(&new, aux -> result);
+					}
+					aux = aux -> next;
+				}
+	
+			}
+			
+			v = v-> next;
+
+		}
+		
+		deleteVector(v);
+		v = NULL;
+		addStates(&v, new);
+		
+		i++;
+	}
+
+	printf("El conjunto de estados final es:\n");
+	printVector(v);
+
+	int valid = 0;
+
+	Vector * auxV = automat -> end;
+	while(auxV){
+		Vector * v2 = v;
+		while(v2){
+			if(v2 -> value == auxV -> value){
+				valid = 1;
+			}
+			v2 = v2 -> next;
+		}
+		auxV = auxV -> next;
+	}
+
+	if(valid){
+		printf("Es una cadena va'lida\n");
+	}else{
+		printf("No es una cadena va'lida\n");
+	}
+}
+
+Vector * splitInts(char * buff){
+
+	char * auxS = malloc(250);
+	Vector * states = NULL;
+
+	int i = 0;
+	int j = 0;
+
+	while(buff[i]){
+		if(buff[i] == ','){
+			auxS[j+1] = '\0';
+			if(sizeString(auxS) > 0){
+				addState(&states, atoi(auxS));	
+			}
+			free(auxS);
+			char * auxS = malloc(250);
+			j = 0;
+
+		}else{	
+			auxS[j] = buff[i];
+			j++;
+		}
+		i++;
+	}
+	
+	auxS[j+1] = '\0';
+
+	if(sizeString(auxS) > 0){
+		addState(&states, atoi(auxS));
+		free(auxS);
+		char * auxS = malloc(250);
+	}
+
+	return states;
+}
+
+Automat * createAutomat(char * name){
 	FILE * fp;
-	fp = fopen("3.txt", "r");
+	fp = fopen(name, "r");
 	char buff[250];
 
 	//Lo primero que se lee del archivo son los estados
@@ -144,9 +276,14 @@ int main(){
 
 	}
 
+	fclose(fp);
+	return automat;
+}
+
+void showInfo(Automat * automat){
 	//Información del autómata
 	printf("Los estados del auto'mata son: ");
-	auxS = automat -> states;
+	State * auxS = automat -> states;
 	while(auxS){
 		printf("[q%i] ", auxS -> value);
 		auxS = auxS -> next;
@@ -174,129 +311,4 @@ int main(){
 		}
 		auxS = auxS -> next;
 	}
-
-	fclose(fp);
-
-	printf("Escribe la cadena: ");
-	char * a = readStringInput();
-
-	Vector * v = NULL;
-	addState(&v, automat -> start);
-
-	int i = 0;
-
-	while(a[i]){
-
-		//printVector(v);
-		Vector * new = NULL;
-
-		while(v){
-
-			State * current = NULL;
-			State * auxS = states;
-			while(auxS){
-				if(auxS -> value == v -> value){
-					current = auxS;
-				}
-				auxS = auxS -> next;
-			}
-
-
-			if(current){
-				printf("q%i ->", current -> value);
-				int value = a[i];
-				//printf("El caracter nu'mero %i es %c.\n", i, a[i]);
-				Transitions * aux = current -> table;
-				
-				while(aux){
-
-					//printf("== %c vs %c ==\n", aux -> accepted, value);
-					
-					if(value == aux -> accepted){
-						//printf("Valor aceptado\n");
-						
-						Vector * auxResult = aux -> result;
-						while(auxResult){
-							printf("[q%i] ", auxResult -> value);
-							auxResult = auxResult -> next;
-						}printf("\n");
-						
-						addStates(&new, aux -> result);
-					}
-					aux = aux -> next;
-				}
-	
-			}
-			
-			v = v-> next;
-
-		}
-		
-		deleteVector(v);
-		v = NULL;
-		addStates(&v, new);
-		
-		i++;
-	}
-
-	printf("El conjunto de estados final es:\n");
-	printVector(v);
-
-	int valid = 0;
-
-	auxV = automat -> end;
-	while(auxV){
-		Vector * v2 = v;
-		while(v2){
-			if(v2 -> value == auxV -> value){
-				valid = 1;
-			}
-			v2 = v2 -> next;
-		}
-		auxV = auxV -> next;
-	}
-
-	if(valid){
-		printf("Es una cadena va'lida");
-	}else{
-		printf("No es una cadena va'lida");
-	}
-}
-
-Vector * splitInts(char * buff){
-
-	char * auxS = malloc(250);
-	Vector * states = NULL;
-
-	int i = 0;
-	int j = 0;
-
-	while(buff[i]){
-		//printf("Lei un %c\n", buff[i]);
-		if(buff[i] == ','){
-			auxS[j+1] = '\0';
-			if(sizeString(auxS) > 0){
-				//printf("Voy a agregar un %s\n", auxS);
-				addState(&states, atoi(auxS));	
-			}
-			free(auxS);
-			char * auxS = malloc(250);
-			j = 0;
-
-		}else{	
-			auxS[j] = buff[i];
-			j++;
-		}
-		i++;
-	}
-	
-	auxS[j+1] = '\0';
-
-	if(sizeString(auxS) > 0){
-		addState(&states, atoi(auxS));
-		free(auxS);
-		char * auxS = malloc(250);
-	}
-
-	return states;
 }

@@ -7,6 +7,11 @@ typedef struct vector{
 }Vector;
 
 void printVector(Vector * states){
+
+	if(!states){
+		printf("El vector esta' vaci'o\n");
+	}
+
 	Vector * aux = states;
 	int i = 0;
 
@@ -70,4 +75,14 @@ void deleteVector(Vector * states){
 		deleteVector(states -> next);
 	}
 	free(states);
+}
+
+int getSize(Vector * states){
+	int size = 0;
+	Vector * aux = states; 
+	while(states){
+		aux = aux -> next;
+		size++;
+	}
+	return size;
 }
