@@ -7,6 +7,7 @@
 Vector * splitInts(char *);
 Automat * createAutomat(char *);
 void showInfo(Automat *);
+void evaluateInput(char *, Automat *);
 
 int main(){
 	
@@ -14,91 +15,9 @@ int main(){
 	char * name = readStringInput();
 	Automat * automat= createAutomat(name);
 	showInfo(automat);
-
 	printf("Escribe la cadena: ");
 	char * a = readStringInput();
-
-	Vector * v = NULL;
-	addState(&v, automat -> start);
-
-	int i = 0;
-
-	while(a[i]){
-
-		//printVector(v);
-		Vector * new = NULL;
-
-		while(v){
-
-			State * current = NULL;
-			State * auxS = automat -> states;
-			while(auxS){
-				if(auxS -> value == v -> value){
-					current = auxS;
-				}
-				auxS = auxS -> next;
-			}
-
-
-			if(current){
-				printf("q%i ->", current -> value);
-				int value = a[i];
-				//printf("El caracter nu'mero %i es %c.\n", i, a[i]);
-				Transitions * aux = current -> table;
-				
-				while(aux){
-
-					//printf("== %c vs %c ==\n", aux -> accepted, value);
-					
-					if(value == aux -> accepted){
-						//printf("Valor aceptado\n");
-						
-						Vector * auxResult = aux -> result;
-						while(auxResult){
-							printf("[q%i] ", auxResult -> value);
-							auxResult = auxResult -> next;
-						}printf("\n");
-						
-						addStates(&new, aux -> result);
-					}
-					aux = aux -> next;
-				}
-	
-			}
-			
-			v = v-> next;
-
-		}
-		
-		deleteVector(v);
-		v = NULL;
-		addStates(&v, new);
-		
-		i++;
-	}
-
-	printf("El conjunto de estados final es:\n");
-	printVector(v);
-
-	int valid = 0;
-
-	Vector * auxV = automat -> end;
-	while(auxV){
-		Vector * v2 = v;
-		while(v2){
-			if(v2 -> value == auxV -> value){
-				valid = 1;
-			}
-			v2 = v2 -> next;
-		}
-		auxV = auxV -> next;
-	}
-
-	if(valid){
-		printf("Es una cadena va'lida\n");
-	}else{
-		printf("No es una cadena va'lida\n");
-	}
+	evaluateInput(a, automat);
 }
 
 Vector * splitInts(char * buff){
@@ -278,6 +197,133 @@ Automat * createAutomat(char * name){
 
 	fclose(fp);
 	return automat;
+}
+
+void evaluateInput(char * a, Automat * automat){
+	// Creamos el vector "v" que va a contener los estados
+	Vector * v = NULL;
+
+	// Creamos el camino que va registrando los pasos que sigue el autómata
+	Path * paths = NULL;
+
+	// Añadimos el primer paso a ambas estructuras, vector y camino
+	addState(&v, automat -> start);
+	addStep(&paths, 0, automat -> start);
+
+	// Creamos un variable i para recorrer la cadena de entrada
+	int i = 0;
+
+	// Empezamos a evaluar la cadena de entrada
+	while(a[i]){
+
+		// Limpiamos el vector "new" que es de donde se agregan los nuevos estados.
+		Vector * new = NULL;
+
+		// Creamos la variable "j" para llevar un conteo de cuál vector se está evaluando ahora.
+		int j = 0;
+
+		// Recorremos los vectores dentro de v
+		while(v){
+
+			/* Buscamos en nuestros estados el estado actual, para ello recorremos
+			todos los estados que tenemos hasta encontrar el que concuerde con el
+			del valor del vector v*/
+
+			State * current = NULL;
+			State * auxS = automat -> states;
+			while(auxS){
+				if(auxS -> value == v -> value){
+					current = auxS;
+				}
+				auxS = auxS -> next;
+			}
+
+			/* Verificamos que dicho estado existe. En un archivo estructurado
+			de la forma correcta, esta comprobación nunca debería ser 0*/
+			if(current){
+
+				/* Esta variable value es la que se le va a dar al autómata para
+				que la evalúe con la tabla de transiciones */
+				int value = a[i];
+				Transitions * aux = current -> table;
+				
+				/* Recorremos la tabla de transiciones para revisar si es un valor aceptado
+				y registramos una bandera para saber si es necesario eliminar el camino o no*/
+				int valueAccepted = 0;
+
+				while(aux){
+					if(value == aux -> accepted){
+						// Valor aceptado 			
+						addStates(&new, aux -> result);
+						valueAccepted = 1;
+
+
+						/* Las agregamos además, al camino, pero primero hay que verificar
+						cuántos resultados tenemos */
+						if(getSize(aux -> result) > 1){
+							/*Si es más de uno, tenemos que duplicar el camino que estamos
+							actualmente por cada entrada adicional y agregarlo a ese camino 
+							
+							Vector * auxP = aux -> result;
+							while(auxP){
+								duplicatePath(&paths, j);
+								auxP = auxP -> next;
+							}
+							Y ahora sí, agregamos los pasos a los caminos
+							auxP = aux -> result;
+							while(auxP){
+								addStep(&paths, j, auxP -> value);
+								auxP = auxP -> next;
+								j++;
+							}*/
+						}else{
+							/*Si es sólo uno, lo agregamos en el índice que corresponde
+							(el cual estamos llevando con j)*/
+							addStep(&paths, j, (aux -> result) -> value);
+						}
+
+
+
+					}
+					aux = aux -> next;
+				}
+	
+			}
+			
+			v = v-> next;
+			j++;
+
+		}
+		
+		deleteVector(v);
+		v = NULL;
+		addStates(&v, new);
+		
+		i++;
+	}
+
+	printf("El camino recorrido es:\n");
+	printPath(paths, 0, a);
+
+	int valid = 0;
+
+	Vector * auxV = automat -> end;
+	while(auxV){
+		Vector * v2 = v;
+		while(v2){
+			if(v2 -> value == auxV -> value){
+				valid = 1;
+			}
+			v2 = v2 -> next;
+		}
+		auxV = auxV -> next;
+	}
+
+	if(valid){
+		printf("Es una cadena va'lida\n");
+	}else{
+		printf("No es una cadena va'lida\n");
+	}
 }
 
 void showInfo(Automat * automat){

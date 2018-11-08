@@ -38,7 +38,8 @@ void addState(Vector ** states, int state){
 	}
 }
 
-void addStates(Vector ** states, Vector * add){
+void addStates(Vector ** states, Vector * v){
+	Vector * add = v; 
 	while(add){
 		addState(states, add -> value);
 		add = add -> next;
@@ -79,8 +80,9 @@ void deleteVector(Vector * states){
 
 int getSize(Vector * states){
 	int size = 0;
-	Vector * aux = states; 
-	while(states){
+	Vector * aux = states;
+
+	while(aux){
 		aux = aux -> next;
 		size++;
 	}

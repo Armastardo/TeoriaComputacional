@@ -3,7 +3,7 @@
 #include "vector.c"
 
 int main(){
-	Vector * states zzz= NULL;
+	Vector * states= NULL;
 
 	addState(&states, 1);
 	addState(&states, 3);
@@ -16,6 +16,7 @@ int main(){
 	deleteState(&states, 0);
 
 	printVector(states);
+	printf("El tamaño del vector es: %i\n", getSize(states));
 
 	return 0;
 }

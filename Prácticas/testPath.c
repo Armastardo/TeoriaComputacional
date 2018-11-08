@@ -8,6 +8,8 @@ int main(){
 	addStep(&paths, 0, 3);
 
 	duplicatePath(&paths, 0);
+	duplicatePath(&paths, 0);
+	duplicatePath(&paths, 0);
 
 	addStep(&paths, 0, 3);
 	addStep(&paths, 1, 4);
