@@ -8,27 +8,18 @@ Vector * splitInts(char *);
 Automat * createAutomat(char *);
 void showInfo(Automat *);
 void evaluateInput(char *, Automat *);
+Vector * validatePaths(Path *, Vector *);
 
 int main(){
 
 	printf("Escribe el nombre del archivo (con extensio'n): ");
 	char * name = readStringInput();
-
-	
-	Path * paths = NULL;
-	addStep(&paths, 0, 1);
-	duplicatePath(&paths, 0);
-	printPath(paths, 0, "");
-	printf("======\n");
-	printPath(paths, 1, "");
-	
+	printf("\n");
 	Automat * automat= createAutomat(name);
-
-
 	showInfo(automat);
-
-	printf("Escribe la cadena: ");
+	printf("\nEscribe la cadena: ");
 	char * a = readStringInput();
+	printf("\n");
 	evaluateInput(a, automat);
 }
 
@@ -231,6 +222,7 @@ void evaluateInput(char * a, Automat * automat){
 
 		// Limpiamos el vector "new" que es de donde se agregan los nuevos estados.
 		Vector * new = NULL;
+		Vector * deleteP = NULL;
 
 		// Creamos la variable "j" para llevar un conteo de cuál vector se está evaluando ahora.
 		int j = 0;
@@ -278,20 +270,18 @@ void evaluateInput(char * a, Automat * automat){
 							actualmente por cada entrada adicional y agregarlo a ese camino */
 							
 							int times = getSize(aux -> result);
-							printf("Vamos a duplicar %i veces\n", times);
 							while(times > 1){
-								printf("Estamos en la posicion %i\n", j);
-								//duplicatePath(&paths, 0);
+								duplicatePath(&paths, 0);
 								times--;
 
 							}
-							/*Y ahora sí, agregamos los pasos a los caminos
-							auxP = aux -> result;
+							// Y ahora sí, agregamos los pasos a los caminos
+							Vector * auxP = aux -> result;
 							while(auxP){
 								addStep(&paths, j, auxP -> value);
 								auxP = auxP -> next;
 								j++;
-							}*/
+							}
 						}else{
 							/*Si es sólo uno, lo agregamos en el índice que corresponde
 							(el cual estamos llevando con j)*/
@@ -303,6 +293,9 @@ void evaluateInput(char * a, Automat * automat){
 					}
 					aux = aux -> next;
 				}
+				if(!valueAccepted){
+					addState(&deleteP, j);
+				}
 	
 			}
 			
@@ -312,34 +305,27 @@ void evaluateInput(char * a, Automat * automat){
 		}
 		
 		deleteVector(v);
+		deletePaths(&paths, deleteP);
 		v = NULL;
 		addStates(&v, new);
 		
 		i++;
 	}
 
-	printf("El camino recorrido es:\n");
-	printPath(paths, 0, a);
+	printf("Los caminos recorridos son:\n");
+	printPaths(paths, a);
 
-	int valid = 0;
+	Vector * validPaths = validatePaths(paths, automat -> end);
 
-	Vector * auxV = automat -> end;
-	while(auxV){
-		Vector * v2 = v;
-		while(v2){
-			if(v2 -> value == auxV -> value){
-				valid = 1;
-			}
-			v2 = v2 -> next;
-		}
-		auxV = auxV -> next;
-	}
-
-	if(valid){
-		printf("Es una cadena va'lida\n");
+	if(validPaths){
+		printf("\nEs una cadena va'lida\n");
 	}else{
-		printf("No es una cadena va'lida\n");
+		printf("\nNo es una cadena va'lida\n");
 	}
+	printf("Los caminos va'lidos son:\n");
+
+	printPathsI(paths, validPaths, a);
+
 }
 
 void showInfo(Automat * automat){
@@ -358,7 +344,7 @@ void showInfo(Automat * automat){
 		auxV = auxV -> next;
 	}
 
-	printf("\n== Transiciones ==\n");
+	printf("\n\n== Transiciones ==\n");
 	
 	auxS = automat -> states;
 	while(auxS){
@@ -373,4 +359,33 @@ void showInfo(Automat * automat){
 		}
 		auxS = auxS -> next;
 	}
+}
+
+Vector * validatePaths(Path * paths, Vector * valid){
+	Vector * validPaths = NULL;
+
+	Path * auxP = paths;
+	int i = 0;
+
+	while(auxP){
+		Vector * auxV = auxP -> vector;
+		
+		while(auxV -> next){
+			auxV = auxV -> next;
+		}
+
+		Vector * auxValid = valid;
+		while(auxValid){
+			if(auxValid -> value == auxV -> value){
+				addState(&validPaths, i);
+			}
+			auxValid = auxValid -> next;
+		}
+
+		i++;
+		auxP = auxP -> next;
+	}
+
+	return validPaths;
+
 }

@@ -9,6 +9,7 @@ void addStep(Path ** path, int index, int value){
 	if(!*path){
 		*path = malloc(sizeof(Path));
 		(*path) -> vector = NULL;
+		(*path) -> next = NULL;
 	}
 
 	int i = 0;
@@ -26,6 +27,8 @@ void addStep(Path ** path, int index, int value){
 
 void duplicatePath(Path ** path, int index){
 	Path * new = malloc(sizeof(Path));
+	new -> vector = NULL;
+	new -> next = NULL;
 
 	int i = 0;
 	if(index == 0){
@@ -77,6 +80,15 @@ void deletePath(Path ** path, int index){
 	}
 }
 
+void deletePaths(Path ** path, Vector * indexes){
+	int i = 0;
+	while(indexes){
+		deletePath(path, (indexes -> value) - i);
+		i++;
+		indexes = indexes -> next;
+	}
+}
+
 void printPath(Path * path, int index, char * input){
 	int i = 0;
 	Path * aux = path;
@@ -98,4 +110,34 @@ void printPath(Path * path, int index, char * input){
 		i++;
 	}
 
+}
+
+void printPaths(Path * path, char * input){
+	
+	if(!path){
+		printf("No hay ningu'n camino\n");
+	}else{
+		Path * auxP = path;
+		while(auxP){
+			Vector * auxV = auxP -> vector;
+			int i = 0;
+			while(auxV){
+				if(auxV -> next){
+					printf("[q%i] - %c -> ", auxV -> value, input[i]);	
+				}else{
+					printf("[q%i]\n", auxV -> value);
+				}
+				auxV = auxV -> next;
+				i++;
+			}
+			auxP = auxP -> next;
+		}
+	}
+}
+
+void printPathsI(Path * path, Vector * indexes, char * input){
+	while(indexes){
+		printPath(path, indexes -> value, input);
+		indexes = indexes -> next;
+	}
 }
