@@ -80,8 +80,8 @@ void deleteVector(Vector * states){
 
 int getSize(Vector * states){
 	int size = 0;
+	
 	Vector * aux = states;
-
 	while(aux){
 		aux = aux -> next;
 		size++;

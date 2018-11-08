@@ -1,3 +1,5 @@
+#include "vector.c"
+
 typedef struct path{
 	Vector * vector;
 	struct path * next;

@@ -1,6 +1,3 @@
-#include <stdlib.h>
-#include "vector.c"
-
 //Transiciones de la tabla de estados
 typedef struct transitions{
 	char accepted;

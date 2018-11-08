@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "path.c"
 #include "ndfaFile.c"
 #include "readInput.c"
-#include "path.c"
 
 Vector * splitInts(char *);
 Automat * createAutomat(char *);
@@ -10,11 +10,23 @@ void showInfo(Automat *);
 void evaluateInput(char *, Automat *);
 
 int main(){
-	
+
 	printf("Escribe el nombre del archivo (con extensio'n): ");
 	char * name = readStringInput();
+
+	
+	Path * paths = NULL;
+	addStep(&paths, 0, 1);
+	duplicatePath(&paths, 0);
+	printPath(paths, 0, "");
+	printf("======\n");
+	printPath(paths, 1, "");
+	
 	Automat * automat= createAutomat(name);
+
+
 	showInfo(automat);
+
 	printf("Escribe la cadena: ");
 	char * a = readStringInput();
 	evaluateInput(a, automat);
@@ -200,6 +212,7 @@ Automat * createAutomat(char * name){
 }
 
 void evaluateInput(char * a, Automat * automat){
+
 	// Creamos el vector "v" que va a contener los estados
 	Vector * v = NULL;
 
@@ -262,14 +275,17 @@ void evaluateInput(char * a, Automat * automat){
 						cuántos resultados tenemos */
 						if(getSize(aux -> result) > 1){
 							/*Si es más de uno, tenemos que duplicar el camino que estamos
-							actualmente por cada entrada adicional y agregarlo a ese camino 
+							actualmente por cada entrada adicional y agregarlo a ese camino */
 							
-							Vector * auxP = aux -> result;
-							while(auxP){
-								duplicatePath(&paths, j);
-								auxP = auxP -> next;
+							int times = getSize(aux -> result);
+							printf("Vamos a duplicar %i veces\n", times);
+							while(times > 1){
+								printf("Estamos en la posicion %i\n", j);
+								//duplicatePath(&paths, 0);
+								times--;
+
 							}
-							Y ahora sí, agregamos los pasos a los caminos
+							/*Y ahora sí, agregamos los pasos a los caminos
 							auxP = aux -> result;
 							while(auxP){
 								addStep(&paths, j, auxP -> value);
