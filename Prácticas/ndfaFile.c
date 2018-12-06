@@ -17,6 +17,7 @@ typedef struct automat{
 	int start;
 	Vector * end;
 	State * states;
+	CharList * alfabet;
 } Automat;
 
 //Si leo X, entonces se vuelve Q y se crea S

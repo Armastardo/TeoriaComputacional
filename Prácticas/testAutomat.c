@@ -4,6 +4,9 @@
 #include "ndfaFile.c"
 #include "readInput.c"
 
+/* Coreo del maestro: compiladores19@hotmail.com
+Ap1_Ap2_TC_PR5 */ 
+
 Vector * splitInts(char *);
 Automat * createAutomat(char *);
 void showInfo(Automat *);
@@ -246,19 +249,22 @@ void evaluateInput(char * a, Automat * automat){
 			/* Verificamos que dicho estado existe. En un archivo estructurado
 			de la forma correcta, esta comprobación nunca debería ser 0*/
 			if(current){
+				//printf("Evaluando [q%i] con %c...\n", current -> value, a[i]);
+
+				/* Recorremos la tabla de transiciones para revisar si es un v212alor aceptado
+				y registramos una bandera para saber si es necesario eliminar el camino o no*/
+				int valueAccepted = 0;
 
 				/* Esta variable value es la que se le va a dar al autómata para
 				que la evalúe con la tabla de transiciones */
 				int value = a[i];
+				//printf("Asignada la tabla de transiciones\n");
 				Transitions * aux = current -> table;
-				
-				/* Recorremos la tabla de transiciones para revisar si es un valor aceptado
-				y registramos una bandera para saber si es necesario eliminar el camino o no*/
-				int valueAccepted = 0;
 
 				while(aux){
 					if(value == aux -> accepted){
 						// Valor aceptado 			
+						//printf("Valor aceptado: %c\n", a[i]);
 						addStates(&new, aux -> result);
 						valueAccepted = 1;
 
@@ -266,11 +272,13 @@ void evaluateInput(char * a, Automat * automat){
 						/* Las agregamos además, al camino, pero primero hay que verificar
 						cuántos resultados tenemos */
 						if(getSize(aux -> result) > 1){
+							//printf("Se van a agregar %i resultados\n", getSize(aux -> result));
 							/*Si es más de uno, tenemos que duplicar el camino que estamos
 							actualmente por cada entrada adicional y agregarlo a ese camino */
 							
 							int times = getSize(aux -> result);
 							while(times > 1){
+								//printf("Duplicando...\n");
 								duplicatePath(&paths, 0);
 								times--;
 
@@ -278,22 +286,23 @@ void evaluateInput(char * a, Automat * automat){
 							// Y ahora sí, agregamos los pasos a los caminos
 							Vector * auxP = aux -> result;
 							while(auxP){
+								//printf("Agregando los nuevos pasos...\n");
 								addStep(&paths, j, auxP -> value);
 								auxP = auxP -> next;
 								j++;
+								//printf("Agregados con e'xito\n");
 							}
 						}else{
 							/*Si es sólo uno, lo agregamos en el índice que corresponde
 							(el cual estamos llevando con j)*/
+							//printf("Agregando el nuevo paso...\n");
 							addStep(&paths, j, (aux -> result) -> value);
 						}
-
-
-
 					}
 					aux = aux -> next;
 				}
 				if(!valueAccepted){
+					printf("Valor no aceptado\n");
 					addState(&deleteP, j);
 				}
 	
@@ -304,8 +313,10 @@ void evaluateInput(char * a, Automat * automat){
 
 		}
 		
+		deleteVector(deleteP);
+		deleteP = NULL;
+		
 		deleteVector(v);
-		deletePaths(&paths, deleteP);
 		v = NULL;
 		addStates(&v, new);
 		

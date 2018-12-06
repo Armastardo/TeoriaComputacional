@@ -101,7 +101,7 @@ void printPath(Path * path, int index, char * input){
 
 	i = 0;
 	while(auxV){
-		if(input[i]){
+		if(auxV -> next){
 			printf("[q%i] - %c -> ", auxV -> value, input[i]);	
 		}else{
 			printf("[q%i]\n", auxV -> value);
@@ -140,4 +140,12 @@ void printPathsI(Path * path, Vector * indexes, char * input){
 		printPath(path, indexes -> value, input);
 		indexes = indexes -> next;
 	}
+}
+
+
+void freePaths(Path * path){
+	if(path){
+		freePaths(path -> next);
+	}
+	free(path);
 }
